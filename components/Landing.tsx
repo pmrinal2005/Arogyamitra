@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import Carousel3D from "@/components/Carousel3D";
 import ArogyaFilm from "@/components/ArogyaFilm";
 
@@ -500,13 +501,13 @@ export default function Landing() {
               </div>
             </div>
           </div>
-          <a
+          <Link
             className="download-btn"
             href="/dashboard"
           >
             <i className="bi bi-heart-pulse" />
             <span>Get Started</span>
-          </a>
+          </Link>
         </div>
 
         {/* Mobile */}
@@ -558,13 +559,13 @@ export default function Landing() {
               </div>
             </div>
           </div>
-          <a
+          <Link
             className="download-btn-m"
             href="/dashboard"
           >
             <i className="bi bi-heart-pulse" />
             <span>Get Started</span>
-          </a>
+          </Link>
         </div>
       </header>
 
