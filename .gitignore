@@ -1,6 +1,11 @@
 # Dependencies
 node_modules/
 
+# Next.js
+.next/
+out/
+next-env.d.ts
+
 # Vercel
 .vercel
 
@@ -15,6 +20,10 @@ Thumbs.db
 # Editor
 .vscode/
 .idea/
+
+# Env
+.env
+.env*.local
 
 # Archives
 *.tar.gz

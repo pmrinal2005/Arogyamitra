@@ -1,67 +1,102 @@
-# SynapseX
+# Arogyamitra — SynapseX (Next.js / React)
+
+A pixel-for-pixel rebuild of the original **SynapseX** static landing page as a
+**Next.js 14 (App Router) + React 18** application, engineered for a clean,
+successful **Vercel free-tier** deployment.
 
 ## Project Overview
-- **Name**: SynapseX
-- **Goal**: A scroll-driven, cinematic single-page landing site for a fictional neural-AI product, rendered as a pure static website.
-- **Features**:
-  - Fixed background video that **scrubs frame-by-frame with scroll** (not autoplaying) plus a scroll-driven blur + scale effect.
-  - Animated "scramble-in / scramble-out" hero typography (`Brain / And Body` + `One / Network`).
+- **Name**: Arogyamitra (SynapseX landing page)
+- **Goal**: Reproduce the exact scroll-driven, cinematic neural-AI landing page in
+  Next.js/React while fixing the failed Vercel deployment of the original static repo.
+- **Features** (identical to the original):
+  - Fixed background video that **scrubs frame-by-frame with scroll** plus a
+    scroll-driven blur + scale effect and a cinematic entrance zoom/fade.
+  - Animated **"scramble-in / scramble-out"** hero typography
+    (`Brain / And Body` + `One / Network`).
   - Cinematic 3D parallax paragraph with scroll-tied opacity keyframes.
-  - Coverflow stats carousel (Swiper 11) that reveals on scroll.
-  - Glassmorphic header with animated expandable hamburger menu (separate desktop + mobile variants).
-  - Smooth scrolling via Lenis on desktop.
-  - Fully responsive across mobile and desktop (`@media` breakpoint at 640px).
+  - **Coverflow stats carousel** (Swiper 11) that reveals on scroll.
+  - Glassmorphic header with animated expandable hamburger menu
+    (separate desktop + mobile variants).
+  - Smooth scrolling via **Lenis** on desktop.
+  - Fully responsive (`@media` breakpoint at 640px).
 
-## URLs
-- **Production**: Deploy to Vercel — will be `https://<your-project>.vercel.app`
-- **Local dev**: `npx serve .` → http://localhost:3000
+## Why the original Vercel build failed & how this fixes it
+The original repo was a pure static site whose `package.json` build script was
+`echo "..." && exit 0` with **no output directory** declared in `vercel.json`.
+When Vercel auto-detected the project and ran `npm run build`, it could not resolve
+a valid build output, so the pipeline stalled right after `Running "npm run build"`
+(exactly where the provided log truncates).
 
-## Data Architecture
-- **Data Models**: A static in-file `statsData` array (title / value / footer / details) used to build carousel cards.
-- **Storage Services**: None — 100% static, no backend, no database.
-- **Data Flow**: All state (scroll progress, entrance phase, scramble state) lives in-memory in the browser via a single `requestAnimationFrame` loop.
-
-## User Guide
-1. Open the site — the background video fades in, then hero text "scrambles" into place.
-2. Scroll down — the video scrubs like a timeline while blurring/zooming, the hero fades out, the cinematic paragraph tilts into view, and the stats carousel reveals.
-3. Drag / swipe the stats carousel to browse metric cards.
-4. Use the hamburger menu (About / Metrics) to jump between sections.
+**Fix**: This rebuild uses a first-class, Vercel-native **Next.js** project. Vercel
+auto-detects the `nextjs` framework, runs `next build` (which succeeds and emits a
+valid, statically-prerendered output), and deploys with **zero extra configuration**.
 
 ## Tech Stack
-- **HTML / CSS / vanilla JavaScript** (single file: `index.html`)
-- **Space Mono** font (Google Fonts)
-- **Bootstrap Icons** (CDN)
+- **Next.js 14.2.x** (App Router) + **React 18** + **TypeScript**
+- **Space Mono** font (Google Fonts) + **Bootstrap Icons** (CDN)
 - **Swiper 11** (CDN) — coverflow carousel
 - **Lenis 1.1.18** (CDN, desktop only) — smooth scroll
 
-## Deployment (Vercel Free Tier)
-This is a static site — no build step, no server runtime required.
+## Project Structure
+```
+arogyamitra-next/
+├── app/
+│   ├── globals.css        # All original styles, verbatim
+│   ├── layout.tsx         # <head>: fonts, icons, Swiper CSS, metadata, favicon
+│   └── page.tsx           # Renders the SynapseX client component
+├── components/
+│   └── SynapseX.tsx       # Full markup + the exact animation logic (client component)
+├── next.config.mjs
+├── tsconfig.json
+├── vercel.json            # nextjs framework + security headers (from original)
+└── package.json
+```
 
+## Data Architecture
+- **Data Models**: A static in-file `statsData` array (title / value / footer /
+  details) used to build the carousel cards.
+- **Storage Services**: None — 100% static/client-side, no backend, no database.
+- **Data Flow**: All state (scroll progress, entrance phase, scramble state) lives
+  in-memory in the browser via a single `requestAnimationFrame` loop inside a
+  React `useEffect`.
+
+## Local Development
+```bash
+npm install
+npm run dev      # http://localhost:3000 (dev)
+# or a production-parity run:
+npm run build && npm run start
+```
+
+## Deployment (Vercel Free Tier)
 ### Option A — Vercel Dashboard
 1. Push this folder to a Git repo (GitHub/GitLab/Bitbucket).
 2. Import the repo at https://vercel.com/new.
-3. Framework preset: **Other**. Build command: *(leave empty)*. Output directory: `./`.
+3. Framework preset: **Next.js** (auto-detected). Leave build/output settings default.
 4. Deploy.
 
 ### Option B — Vercel CLI
 ```bash
 npm i -g vercel
-cd synapsex
-vercel        # preview deploy
-vercel --prod # production deploy
+vercel          # preview deploy
+vercel --prod   # production deploy
 ```
 
-`vercel.json` is included with `cleanUrls` and basic security headers. Since the project root contains `index.html`, Vercel serves it as a static site with zero configuration.
+## Completed Features
+- ✅ Exact visual + interaction parity with the original static site
+- ✅ Clean `next build` (statically prerendered `/` route)
+- ✅ Verified runtime with no console errors; Swiper cards build dynamically
+- ✅ Security headers preserved via `vercel.json`
 
-## Not Yet Implemented
-- No real "Download" target (the button links to an external Instagram URL as in the source).
-- No analytics / SEO metadata beyond the title.
+## Not Yet Implemented (same as original, intentionally)
+- No real "Download" target (button links to an external Instagram URL, as in source).
+- No analytics / extended SEO metadata beyond title + description.
 
 ## Recommended Next Steps
-- Add Open Graph / Twitter card meta tags and a favicon.
-- Self-host the video + libraries for full offline/independence from third-party CDNs.
-- Add `prefers-reduced-motion` handling to disable heavy animations for accessibility.
+- Add Open Graph / Twitter card meta tags.
+- Self-host the video + libraries to remove third-party CDN dependence.
+- Add `prefers-reduced-motion` handling for accessibility.
 
 ## Status
-- ✅ Active / Ready to deploy
+- ✅ Active / Ready to deploy on Vercel
 - **Last Updated**: 2026-07-24
