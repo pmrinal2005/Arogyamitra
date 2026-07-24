@@ -3,10 +3,19 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 /* ────────────────────────────────────────────────────────────
-   3D PERSPECTIVE CAROUSEL
-   - Active center card: flat, enlarged, highlighted with back-glow
-   - Side cards: curve inward on the 3D Y-axis, lower opacity + scale
-   - Auto-rotation with a 3s delayed transition, pauses on hover
+   AROGYASETU — 3D COVERFLOW CAPABILITY CAROUSEL
+   The four fused layers of the Predictive Community Health OS,
+   plus the closed predictive loop, presented as an auto-rotating
+   3D coverflow deck.
+
+   Behaviour & motion:
+   - Active center card: flat, enlarged, highlighted with back-glow.
+   - Side cards: curve inward on the 3D Y-axis, recede in Z,
+     lower opacity + scale — a true coverflow silhouette.
+   - Auto-play: smooth infinite rotation with a 3s pause per card.
+   - Fluid cubic-bezier easing animates depth, rotation, opacity, scale.
+   - Interactivity: pause on hover / focus; click adjacent cards to select;
+     arrow + dot controls; keyboard arrows; and pointer swipe / drag.
    ──────────────────────────────────────────────────────────── */
 
 export type StatCard = {
@@ -18,75 +27,84 @@ export type StatCard = {
 
 const CARDS: StatCard[] = [
   {
-    title: "NEURAL ACTIVITY",
-    value: "7.2M",
-    footer: "LIVE SIGNALS INTERPRETED",
+    title: "DIGITAL PHENOTYPING",
+    value: "10s",
+    footer: "WEB-BASED SELF-REPORT ENGINE",
     details: [
-      "Continuous temporal synapsing",
-      "1024 parallel telemetry streams",
-      "Dynamic feed classification active",
+      "Adaptive EMA micro check-ins",
+      "PHQ-4 / GAD-2 / UCLA brief scales",
+      "NLP journaling & sentiment trends",
     ],
   },
   {
-    title: "PREDICTIVE MODEL",
-    value: "93%",
-    footer: "FORECAST ACCURACY RATE",
+    title: "ENVIRONMENTAL EXPOSOME",
+    value: "PM2.5",
+    footer: "REAL-TIME EXPOSURE CORRELATOR",
     details: [
-      "Reinforced gradient mapping",
-      "Low latency neural resolution",
-      "Adaptive signal feedback system",
+      "Open-Meteo air, pollen & UV feeds",
+      "Personalized risk narratives",
+      "Correlated against your own history",
     ],
   },
   {
-    title: "EPOCH LATENCY",
-    value: "0.4ms",
-    footer: "CYCLE RESPONSE SPEED",
+    title: "MUTUAL-AID GRAPH",
+    value: "1hr = 1",
+    footer: "TRUST-SCORED TIMEBANKING",
     details: [
-      "Hardware accelerated pipeline",
-      "Direct metal shader execution",
-      "Temporal synchronization loop",
+      "Hyperlocal Leaflet + OSM matching",
+      "Time-credit ledger & balances",
+      "Transparent, user-visible trust score",
     ],
   },
   {
-    title: "COGNITIVE STREAMS",
-    value: "14.8M",
-    footer: "REAL-TIME MODEL COHERENCE",
+    title: "PREDICTIVE LOOP",
+    value: "48-72h",
+    footer: "VULNERABILITY-WINDOW DETECTION",
     details: [
-      "Distributed synapse projection",
-      "High-fidelity entropy filtering",
-      "Sub-millisecond state coherence",
+      "Rising-risk window forecasting",
+      "AI micro-interventions on demand",
+      "Discreet Care Pings to matched people",
     ],
   },
   {
-    title: "SYNAPSE DEPTH",
-    value: "128L",
-    footer: "MODEL RESOLUTION DEPTH",
+    title: "CARE PINGS",
+    value: "1-click",
+    footer: "AUTO-MOBILIZED HUMAN SUPPORT",
     details: [
-      "Deep feed-forward mapping",
-      "Transformer-based neural routing",
-      "Multi-dimensional pattern projection",
+      "Web Push + in-app + email alerts",
+      "Jitsi video companionship launch",
+      "Accept, schedule or gently decline",
     ],
   },
   {
-    title: "SIGNAL INTEGRITY",
-    value: "99.9%",
-    footer: "NOISE REDUCTION RATIO",
+    title: "PRIVACY & CONTROL",
+    value: "100%",
+    footer: "USER-SOVEREIGN, FREE FOREVER",
     details: [
-      "Advanced wave-let filtering",
-      "Dynamic heuristic balancing",
-      "Contextual signal amplification",
+      "Granular opt-in for every signal",
+      "Full export & hard delete anytime",
+      "Row-level security, no data selling",
     ],
   },
 ];
 
-const AUTOPLAY_DELAY = 3000; // 3s delayed transition
+const AUTOPLAY_DELAY = 3000; // 3s pause per active card
+const DRAG_THRESHOLD = 60; // px of horizontal travel to trigger a step
 
 export default function Carousel3D() {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
+  const [dragging, setDragging] = useState(false);
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Pointer / swipe tracking
+  const dragStartX = useRef(0);
+  const dragDeltaX = useRef(0);
+  const pointerActive = useRef(false);
+  const pointerId = useRef<number | null>(null);
+
   const n = CARDS.length;
 
   const go = useCallback(
@@ -128,14 +146,15 @@ export default function Carousel3D() {
     return () => io.disconnect();
   }, []);
 
-  // Autoplay with delayed transition, paused on hover / reduced motion
+  // Autoplay with delayed transition — paused on hover / focus / drag /
+  // reduced motion. Runs as a smooth infinite loop.
   useEffect(() => {
-    if (paused || reduced) return;
+    if (paused || reduced || dragging) return;
     timerRef.current = setTimeout(() => go(1), AUTOPLAY_DELAY);
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [active, paused, reduced, go]);
+  }, [active, paused, reduced, dragging, go]);
 
   // Keyboard navigation
   const onKeyDown = (e: React.KeyboardEvent) => {
@@ -146,6 +165,53 @@ export default function Carousel3D() {
       e.preventDefault();
       go(1);
     }
+  };
+
+  /* ── Pointer swipe / drag gestures ── */
+  const onPointerDown = (e: React.PointerEvent) => {
+    // Ignore secondary buttons
+    if (e.button !== 0 && e.pointerType === "mouse") return;
+    pointerActive.current = true;
+    pointerId.current = e.pointerId;
+    dragStartX.current = e.clientX;
+    dragDeltaX.current = 0;
+    setDragging(true);
+    setPaused(true);
+    try {
+      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    } catch {
+      /* noop */
+    }
+  };
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!pointerActive.current) return;
+    dragDeltaX.current = e.clientX - dragStartX.current;
+  };
+
+  const endDrag = (e: React.PointerEvent) => {
+    if (!pointerActive.current) return;
+    pointerActive.current = false;
+    const delta = dragDeltaX.current;
+    try {
+      if (pointerId.current !== null)
+        (e.currentTarget as HTMLElement).releasePointerCapture(
+          pointerId.current
+        );
+    } catch {
+      /* noop */
+    }
+    pointerId.current = null;
+
+    if (Math.abs(delta) > DRAG_THRESHOLD) {
+      // Drag right → previous card, drag left → next card
+      go(delta < 0 ? 1 : -1);
+    }
+    dragDeltaX.current = 0;
+    setDragging(false);
+    // Resume autoplay only if the pointer isn't still hovering the section.
+    // onMouseLeave will also fire for mouse; for touch we resume here.
+    if (e.pointerType !== "mouse") setPaused(false);
   };
 
   // Compute the shortest signed offset of a card from the active one
@@ -161,15 +227,24 @@ export default function Carousel3D() {
       id="stats-section"
       ref={sectionRef}
       aria-roledescription="carousel"
-      aria-label="Model capability metrics"
+      aria-label="Arogyasetu capability layers"
       tabIndex={0}
       onKeyDown={onKeyDown}
       onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
+      onMouseLeave={() => {
+        if (!pointerActive.current) setPaused(false);
+      }}
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
     >
-      <div className="carousel3d-stage">
+      <div
+        className={`carousel3d-stage${dragging ? " is-dragging" : ""}`}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+        style={{ touchAction: "pan-y" }}
+      >
         <div className="carousel3d-track">
           {CARDS.map((card, i) => {
             const off = offsetOf(i);
@@ -184,7 +259,9 @@ export default function Carousel3D() {
             const translateX = off * 300;
             const translateZ = isActive ? 60 : -180 - (abs - 1) * 120;
             const scale = isActive ? 1 : Math.max(0.68, 1 - abs * 0.14);
-            const opacity = isActive ? 1 : Math.max(0.28, 0.62 - (abs - 1) * 0.22);
+            const opacity = isActive
+              ? 1
+              : Math.max(0.28, 0.62 - (abs - 1) * 0.22);
 
             return (
               <button
@@ -194,7 +271,11 @@ export default function Carousel3D() {
                 aria-hidden={!visible}
                 aria-label={`${card.title}: ${card.value}. ${card.footer}`}
                 tabIndex={isActive ? 0 : -1}
-                onClick={() => (isActive ? undefined : goTo(i))}
+                onClick={() => {
+                  // Suppress the click that ends a drag gesture
+                  if (Math.abs(dragDeltaX.current) > 6) return;
+                  if (!isActive) goTo(i);
+                }}
                 style={{
                   transform: `translate(-50%, -50%) translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
                   opacity: visible ? opacity : 0,
@@ -239,7 +320,11 @@ export default function Carousel3D() {
         >
           <i className="bi bi-arrow-left" />
         </button>
-        <div className="carousel3d-dots" role="tablist" aria-label="Select card">
+        <div
+          className="carousel3d-dots"
+          role="tablist"
+          aria-label="Select card"
+        >
           {CARDS.map((c, i) => (
             <button
               type="button"
@@ -261,6 +346,10 @@ export default function Carousel3D() {
           <i className="bi bi-arrow-right" />
         </button>
       </div>
+
+      <p className="carousel3d-hint" aria-hidden="true">
+        Auto-rotating · hover to pause · drag or swipe to explore
+      </p>
     </section>
   );
 }

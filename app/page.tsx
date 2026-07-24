@@ -1,5 +1,5 @@
-import SynapseX from "@/components/SynapseX";
+import Landing from "@/components/Landing";
 
 export default function Home() {
-  return <SynapseX />;
+  return <Landing />;
 }
