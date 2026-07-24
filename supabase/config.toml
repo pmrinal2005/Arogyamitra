@@ -1,0 +1,27 @@
+# AROGYASETU Supabase project config (for local `supabase` CLI + deploy).
+project_id = "arogyasetu"
+
+[functions.compute-behavioral-health-index]
+verify_jwt = true
+
+[functions.analyze-journal-entry]
+# Invoked by a Database Webhook (service role) — no end-user JWT.
+verify_jwt = false
+
+[functions.fetch-environmental-snapshot]
+verify_jwt = true
+
+[functions.generate-micro-intervention]
+verify_jwt = false
+
+[functions.compute-trust-scores]
+verify_jwt = false
+
+[functions.match-and-send-care-ping]
+verify_jwt = false
+
+[functions.differential-privacy-aggregate]
+verify_jwt = true
+
+[functions.purge-stale-engagement-data]
+verify_jwt = false

@@ -1,20 +1,47 @@
 {
-  "name": "webapp",
-  "type": "module",
+  "name": "arogyasetu",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AROGYASETU — A free, privacy-first, predictive community health operating system.",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "wrangler pages dev",
-    "deploy": "npm run build && wrangler pages deploy",
-    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "seed": "tsx scripts/seed-demo.ts",
+    "db:reset": "echo 'Apply supabase/migrations via Supabase SQL editor or CLI. See README.'"
   },
   "dependencies": {
-    "hono": "^4.12.31"
+    "@supabase/ssr": "^0.5.2",
+    "@supabase/supabase-js": "^2.45.4",
+    "@tanstack/react-query": "^5.59.0",
+    "clsx": "^2.1.1",
+    "date-fns": "^3.6.0",
+    "leaflet": "^1.9.4",
+    "leaflet.markercluster": "^1.5.3",
+    "next": "^14.2.33",
+    "next-intl": "^3.20.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.0",
+    "react-leaflet": "^4.2.1",
+    "recharts": "^2.12.7",
+    "tailwind-merge": "^2.5.2",
+    "zod": "^3.23.8",
+    "zustand": "^4.5.5"
   },
   "devDependencies": {
-    "@hono/vite-build": "^1.11.1",
-    "@hono/vite-dev-server": "^0.26.1",
-    "vite": "^8.1.4",
-    "wrangler": "^4.110.0"
+    "@react-pdf/renderer": "^3.4.5",
+    "@types/leaflet": "^1.9.12",
+    "@types/leaflet.markercluster": "^1.5.4",
+    "@types/node": "^20.16.10",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.2"
   }
 }
