@@ -575,9 +575,7 @@ export default function ArogyaFilm() {
           </p>
           <a
             className="cta-button"
-            href="https://github.com/pmrinal2005/Arogyamitra"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/dashboard"
           >
             <span className="cta-button-fill" aria-hidden="true" />
             <span className="cta-button-text">

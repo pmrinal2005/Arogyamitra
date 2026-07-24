@@ -502,7 +502,7 @@ export default function Landing() {
           </div>
           <a
             className="download-btn"
-            href="#stats-section"
+            href="/dashboard"
           >
             <i className="bi bi-heart-pulse" />
             <span>Get Started</span>
@@ -560,7 +560,7 @@ export default function Landing() {
           </div>
           <a
             className="download-btn-m"
-            href="#stats-section"
+            href="/dashboard"
           >
             <i className="bi bi-heart-pulse" />
             <span>Get Started</span>

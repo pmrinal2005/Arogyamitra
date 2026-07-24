@@ -125,6 +125,12 @@ npm run typecheck
 npm run build
 ```
 
+On the landing page, **"Get Started" / "Launch AROGYASETU" open `/dashboard`.**
+With no Supabase configured, the dashboard runs in a fully-interactive **demo
+mode** (deterministic sample data across every widget), so you can explore the
+entire authenticated app before wiring a backend. Configure Supabase to switch
+seamlessly to live, RLS-protected data.
+
 ---
 
 ## 🗄️ Supabase setup (free tier)

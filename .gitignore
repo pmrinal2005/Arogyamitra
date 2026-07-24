@@ -15,8 +15,19 @@ dist/
 node_modules/
 .wrangler
 
+# next.js
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# vercel
+.vercel
+
 # env
 .env
+.env*.local
+.env.local
 .env.production
 .dev.vars
 
