@@ -1,5 +1,6 @@
 {
   "app.name": "AROGYASETU",
+  "app.tagline": "Predictive Community Health OS",
   "nav.overview": "Overview",
   "nav.checkin": "Check-In",
   "nav.journal": "Journal",
@@ -31,5 +32,8 @@
   "common.cancel": "Cancel",
   "common.submit": "Submit",
   "common.loading": "Loading…",
-  "common.unavailable": "Data temporarily unavailable"
+  "common.unavailable": "Data temporarily unavailable",
+  "common.new": "New",
+  "common.viewAll": "View all",
+  "common.back": "Back"
 }

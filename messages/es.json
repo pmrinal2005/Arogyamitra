@@ -1,5 +1,6 @@
 {
   "app.name": "AROGYASETU",
+  "app.tagline": "Sistema Operativo de Salud Comunitaria Predictiva",
   "nav.overview": "Resumen",
   "nav.checkin": "Registro",
   "nav.journal": "Diario",
@@ -31,5 +32,8 @@
   "common.cancel": "Cancelar",
   "common.submit": "Enviar",
   "common.loading": "Cargando…",
-  "common.unavailable": "Datos no disponibles temporalmente"
+  "common.unavailable": "Datos no disponibles temporalmente",
+  "common.new": "Nuevo",
+  "common.viewAll": "Ver todo",
+  "common.back": "Atrás"
 }
