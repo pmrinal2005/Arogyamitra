@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
+import Carousel3D from "@/components/Carousel3D";
+import A3Film from "@/components/A3Film";
 
 // Reusable logo SVG (identical paths to the original site)
 function LogoGlyph() {
@@ -30,117 +32,12 @@ const VIDEO_URL =
 
 export default function SynapseX() {
   useEffect(() => {
-    // Dynamically load Swiper from CDN, then run the exact original logic.
-    let cleanup = () => {};
-
-    function loadScript(src: string): Promise<void> {
-      return new Promise((resolve, reject) => {
-        const existing = document.querySelector(
-          `script[src="${src}"]`
-        ) as HTMLScriptElement | null;
-        if (existing) {
-          if (existing.getAttribute("data-loaded") === "true") {
-            resolve();
-          } else {
-            existing.addEventListener("load", () => resolve());
-            existing.addEventListener("error", () =>
-              reject(new Error("script load error"))
-            );
-          }
-          return;
-        }
-        const script = document.createElement("script");
-        script.src = src;
-        script.async = false;
-        script.addEventListener("load", () => {
-          script.setAttribute("data-loaded", "true");
-          resolve();
-        });
-        script.addEventListener("error", () =>
-          reject(new Error("script load error"))
-        );
-        document.body.appendChild(script);
-      });
-    }
-
-    loadScript("https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js")
-      .then(() => {
-        cleanup = init();
-      })
-      .catch(() => {
-        // If Swiper fails to load, still run the rest so the page is usable.
-        cleanup = init();
-      });
+    let cleanup = init();
 
     function init(): () => void {
-      const Swiper = (window as any).Swiper;
-
       // ── Constants ──
       const GLYPHS =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+~|}{[]:;?><";
-
-      const statsData = [
-        {
-          title: "NEURAL ACTIVITY",
-          value: "7.2M",
-          footer: "LIVE SIGNALS INTERPRETED",
-          details: [
-            "Continuous temporal synapsing",
-            "1024 parallel telemetry streams",
-            "Dynamic feed classification active",
-          ],
-        },
-        {
-          title: "PREDICTIVE MODEL",
-          value: "93%",
-          footer: "FORECAST ACCURACY RATE",
-          details: [
-            "Reinforced gradient mapping",
-            "Low latency neural resolution",
-            "Adaptive signal feedback system",
-          ],
-        },
-        {
-          title: "EPOCH LATENCY",
-          value: "0.4ms",
-          footer: "CYCLE RESPONSE SPEED",
-          details: [
-            "Hardware accelerated pipeline",
-            "Direct metal shader execution",
-            "Temporal synchronization loop",
-          ],
-        },
-        {
-          title: "COGNITIVE STREAMS",
-          value: "14.8M",
-          footer: "REAL-TIME MODEL COHERENCE",
-          details: [
-            "Distributed synapse projection",
-            "High-fidelity entropy filtering",
-            "Sub-millisecond state coherence",
-          ],
-        },
-        {
-          title: "SYNAPSE DEPTH",
-          value: "128L",
-          footer: "MODEL RESOLUTION DEPTH",
-          details: [
-            "Deep feed-forward mapping",
-            "Transformer-based neural routing",
-            "Multi-dimensional pattern projection",
-          ],
-        },
-        {
-          title: "SIGNAL INTEGRITY",
-          value: "99.9%",
-          footer: "NOISE REDUCTION RATIO",
-          details: [
-            "Advanced wave-let filtering",
-            "Dynamic heuristic balancing",
-            "Contextual signal amplification",
-          ],
-        },
-      ];
 
       // ── State ──
       let scrollProgress = 0;
@@ -158,58 +55,6 @@ export default function SynapseX() {
         _entered?: boolean;
       };
       const cinematicInner = document.getElementById("cinematic-inner")!;
-      const statsSection = document.getElementById("stats-section")!;
-
-      // ── Build Stats Cards ──
-      const wrapper = document.getElementById("swiper-wrapper")!;
-      wrapper.innerHTML = "";
-      statsData.forEach((card) => {
-        const slide = document.createElement("div");
-        slide.className = "swiper-slide";
-        slide.innerHTML = `
-      <div class="stat-card-outer">
-        <div class="stat-card-inner">
-          <div>
-            <div style="display:flex;align-items:center;justify-content:space-between;">
-              <span class="stat-title">${card.title}</span>
-            </div>
-            <div class="stat-value">${card.value}</div>
-          </div>
-          <div class="stat-details">
-            ${card.details
-              .map(
-                (d) =>
-                  `<div class="stat-detail"><span class="dot"></span><span>${d}</span></div>`
-              )
-              .join("")}
-          </div>
-        </div>
-        <div class="stat-footer">${card.footer}</div>
-      </div>`;
-        wrapper.appendChild(slide);
-      });
-
-      // ── Swiper Init ──
-      let swiperInstance: any = null;
-      if (Swiper) {
-        swiperInstance = new Swiper("#stats-swiper", {
-          effect: "coverflow",
-          grabCursor: true,
-          slidesPerView: "auto",
-          centeredSlides: true,
-          loop: true,
-          spaceBetween: 32,
-          coverflowEffect: {
-            rotate: 30,
-            stretch: 0,
-            depth: 100,
-            modifier: 1,
-            slideShadows: false,
-          },
-          observer: true,
-          observeParents: true,
-        });
-      }
 
       // ── Hamburger Menus ──
       const hamburgerBtn = document.getElementById("hamburger-btn")!;
@@ -388,18 +233,6 @@ export default function SynapseX() {
         });
       }
 
-      // ── Stats Reveal on Scroll ──
-      let statsRevealed = false;
-      function checkStatsReveal() {
-        if (statsRevealed) return;
-        const rect = statsSection.getBoundingClientRect();
-        if (rect.top < window.innerHeight * 0.9) {
-          statsRevealed = true;
-          statsSection.classList.add("revealed");
-        }
-      }
-      window.addEventListener("scroll", checkStatsReveal, { passive: true });
-
       // ── Main Animation Loop ──
       let isSeeking = false;
       let nextSeekTime: number | null = null;
@@ -569,7 +402,6 @@ export default function SynapseX() {
       heroDesc.style.transform = "translateY(25px)";
 
       rafId = requestAnimationFrame(tick);
-      checkStatsReveal();
 
       // ── Cleanup on unmount ──
       return () => {
@@ -577,19 +409,11 @@ export default function SynapseX() {
         cancelAnimationFrame(rafId);
         clearTimeout(safetyTimeout);
         window.removeEventListener("scroll", updateScrollProgress);
-        window.removeEventListener("scroll", checkStatsReveal);
         hamburgerBtn.removeEventListener("click", onHamburger);
         hamburgerBtnM.removeEventListener("click", onHamburgerM);
         video.removeEventListener("seeking", onSeeking);
         video.removeEventListener("seeked", onSeeked);
         video.removeEventListener("loadedmetadata", onLoadedMeta);
-        if (swiperInstance && typeof swiperInstance.destroy === "function") {
-          try {
-            swiperInstance.destroy(true, true);
-          } catch {
-            /* noop */
-          }
-        }
       };
     }
 
@@ -839,13 +663,12 @@ export default function SynapseX() {
           </div>
         </div>
 
-        {/* SECTION 2: Stats Carousel */}
-        <div id="stats-section">
-          <div className="swiper" id="stats-swiper">
-            <div className="swiper-wrapper" id="swiper-wrapper" />
-          </div>
-        </div>
+        {/* SECTION 2: 3D Perspective Carousel (replaces Swiper coverflow) */}
+        <Carousel3D />
       </main>
+
+      {/* SECTION 3+: Cinematic "ENTER THE A" launch film for Arogyamitra A3 */}
+      <A3Film />
     </>
   );
 }

@@ -238,19 +238,76 @@ button:focus { outline: none; }
   padding: 0 24px;
 }
 
-/* ── Stats Section ── */
+/* ── Stats Section: 3D Perspective Carousel ── */
 #stats-section {
   width: 100vw; position: relative;
   margin-left: calc(-50vw + 50%);
   margin-top: 64px;
+  padding: 24px 0 8px;
   overflow: hidden;
   opacity: 0; transform: translateY(40px) scale(0.98);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  outline: none;
 }
 #stats-section.revealed { opacity: 1; transform: translateY(0) scale(1); }
 
-.swiper { width: 100%; height: 520px; padding-bottom: 20px !important; overflow: visible !important; }
-.swiper-slide { width: 380px; max-width: 85%; height: 480px; background-position: center; background-size: cover; }
+/* 3D stage that establishes perspective */
+.carousel3d-stage {
+  position: relative;
+  width: 100%;
+  height: 540px;
+  perspective: 1800px;
+  perspective-origin: 50% 50%;
+}
+.carousel3d-track {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+/* Individual card: absolutely centered, transformed in 3D */
+.carousel3d-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 380px;
+  max-width: 85vw;
+  height: 480px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  transition:
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+  -webkit-tap-highlight-color: transparent;
+}
+.carousel3d-card:not(.is-active) { cursor: pointer; }
+.carousel3d-card.is-active { cursor: default; }
+
+/* Subtle warm back-glow behind the active card */
+.card-glow {
+  position: absolute;
+  inset: -14% -10% -14% -16%;
+  border-radius: 40px;
+  background: radial-gradient(
+    60% 60% at 30% 45%,
+    rgba(255, 168, 92, 0.30) 0%,
+    rgba(255, 120, 60, 0.14) 42%,
+    rgba(90, 130, 220, 0.10) 74%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  filter: blur(26px);
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+.carousel3d-card.is-active .card-glow { opacity: 1; }
 
 .stat-card-outer {
   padding: 6px; border-radius: 28px;
@@ -258,14 +315,26 @@ button:focus { outline: none; }
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   display: flex; flex-direction: column;
   justify-content: space-between; height: 480px;
+  transition: box-shadow 0.9s ease, background 0.9s ease;
 }
+.carousel3d-card.is-active .stat-card-outer {
+  background: rgba(255,255,255,0.07);
+  box-shadow:
+    0 24px 80px rgba(0,0,0,0.55),
+    0 0 0 1px rgba(255,255,255,0.08) inset;
+}
+.stat-head { display: flex; align-items: center; justify-content: space-between; }
 .stat-card-inner {
-  background: rgba(0,0,0,0.45);
-  border: 1px solid rgba(255,255,255,0.05);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  background: rgba(6,7,8,0.82);
+  border: 1px solid rgba(255,255,255,0.07);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
   border-radius: 23px; padding: 32px;
   display: flex; flex-direction: column;
   justify-content: space-between; flex: 1;
+  text-align: left;
+}
+.carousel3d-card:not(.is-active) .stat-card-inner {
+  background: rgba(6,7,8,0.9);
 }
 .stat-title {
   font-family: "Space Mono", monospace;
@@ -296,7 +365,36 @@ button:focus { outline: none; }
   color: rgba(255,255,255,0.55);
   text-transform: uppercase; letter-spacing: 0.1em;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  text-align: left;
 }
+
+/* ── Carousel Controls ── */
+.carousel3d-controls {
+  display: flex; align-items: center; justify-content: center;
+  gap: 20px; margin-top: 12px;
+}
+.c3d-arrow {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.8);
+  font-size: 16px; cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease, color 0.25s ease;
+}
+.c3d-arrow:hover { background: rgba(255,255,255,0.12); color: #fff; }
+.c3d-arrow:active { transform: scale(0.94); }
+.c3d-arrow:focus-visible { outline: 2px solid #D6FF3F; outline-offset: 3px; }
+.carousel3d-dots { display: flex; align-items: center; gap: 10px; }
+.c3d-dot {
+  width: 8px; height: 8px; border-radius: 50%; padding: 0;
+  background: rgba(255,255,255,0.22);
+  border: none; cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, width 0.3s ease;
+}
+.c3d-dot:hover { background: rgba(255,255,255,0.5); }
+.c3d-dot.is-active { background: #D6FF3F; width: 22px; border-radius: 4px; }
+.c3d-dot:focus-visible { outline: 2px solid #D6FF3F; outline-offset: 3px; }
 
 /* ── Mobile ── */
 @media (max-width: 639px) {
