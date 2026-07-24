@@ -1,0 +1,13 @@
+{
+  "name": "synapsex",
+  "version": "1.0.0",
+  "description": "SynapseX - a scroll-driven cinematic neural-AI landing page (static site).",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo \"No build step required — static site\" && exit 0",
+    "start": "npx serve ."
+  },
+  "keywords": ["landing-page", "static-site", "vercel", "swiper", "lenis"],
+  "license": "MIT"
+}
