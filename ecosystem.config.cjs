@@ -1,9 +1,9 @@
 module.exports = {
   apps: [
     {
-      name: 'webapp',
-      script: 'node_modules/next/dist/bin/next',
-      args: 'start -p 3000 -H 0.0.0.0',
+      name: 'arogyasetu',
+      script: 'npm',
+      args: 'run start',
       cwd: '/home/user/webapp',
       env: { NODE_ENV: 'production', PORT: 3000 },
       watch: false,
