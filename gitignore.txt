@@ -1,30 +1,33 @@
-# Dependencies
+# prod
+dist/
+
+# dev
+.yarn/
+!.yarn/releases
+.vscode/*
+!.vscode/launch.json
+!.vscode/*.code-snippets
+.idea/workspace.xml
+.idea/usage.statistics.xml
+.idea/shelf
+
+# deps
 node_modules/
+.wrangler
 
-# Next.js
-.next/
-out/
-next-env.d.ts
+# env
+.env
+.env.production
+.dev.vars
 
-# Vercel
-.vercel
-
-# Logs
+# logs
+logs/
 *.log
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# OS files
+# misc
 .DS_Store
-Thumbs.db
-
-# Editor
-.vscode/
-.idea/
-
-# Env
-.env
-.env*.local
-
-# Archives
-*.tar.gz
-*.zip

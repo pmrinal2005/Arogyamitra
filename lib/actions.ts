@@ -72,6 +72,57 @@ export async function submitJournal(
   return { ok: true };
 }
 
+// --- Mutual aid / timebank -------------------------------------------------
+
+export async function offerTimeExchange(
+  fromUserId: string | null,
+  toUserId: string,
+  hours: number,
+  description: string,
+) {
+  if (!isSupabaseConfigured() || !fromUserId) return { ok: true, demo: true };
+  const sb = getSupabaseBrowser();
+  const { error } = await sb.from("time_credits_ledger").insert({
+    from_user_id: fromUserId,
+    to_user_id: toUserId,
+    hours,
+    exchange_description: description,
+    status: "offered",
+  });
+  return error ? { ok: false, error: error.message } : { ok: true };
+}
+
+export async function updateExchangeStatus(
+  id: string,
+  status: "accepted" | "completed" | "declined",
+  rating?: number,
+) {
+  if (!isSupabaseConfigured()) return { ok: true, demo: true };
+  const sb = getSupabaseBrowser();
+  const patch: Record<string, unknown> = { status };
+  if (status === "completed") patch.completed_at = new Date().toISOString();
+  if (rating != null) patch.rating = rating;
+  const { error } = await sb.from("time_credits_ledger").update(patch).eq("id", id);
+  return error ? { ok: false, error: error.message } : { ok: true };
+}
+
+// --- Care pings ------------------------------------------------------------
+
+export async function respondToPing(
+  id: string,
+  status: "seen" | "accepted" | "declined",
+  outcomeNotes?: string,
+  outcomeRating?: number,
+) {
+  if (!isSupabaseConfigured()) return { ok: true, demo: true };
+  const sb = getSupabaseBrowser();
+  const patch: Record<string, unknown> = { status, responded_at: new Date().toISOString() };
+  if (outcomeNotes != null) patch.outcome_notes = outcomeNotes;
+  if (outcomeRating != null) patch.outcome_rating = outcomeRating;
+  const { error } = await sb.from("care_pings").update(patch).eq("id", id);
+  return error ? { ok: false, error: error.message } : { ok: true };
+}
+
 export async function logManualMetric(
   userId: string | null,
   metricType: string,

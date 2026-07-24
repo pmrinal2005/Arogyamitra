@@ -227,6 +227,13 @@ export const demoDirectory: MutualAidDirectoryRow[] = [
   },
 ];
 
+export const demoLagModel = [
+  { lag_days: 0, correlation_strength: 0.18 },
+  { lag_days: 1, correlation_strength: 0.34 },
+  { lag_days: 2, correlation_strength: 0.61 },
+  { lag_days: 3, correlation_strength: 0.29 },
+];
+
 export const demoResilience = { points: 245, streak: 6 };
 export const demoBadges = [
   { badge_type: "Neighbor", earned_at: iso(20) },

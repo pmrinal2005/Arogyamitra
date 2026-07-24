@@ -186,6 +186,52 @@ export function useResilience() {
   });
 }
 
+export interface LagPoint {
+  lag_days: number;
+  correlation_strength: number;
+}
+
+// Personal Exposure Lag Model — correlation between environmental spikes and
+// this user's own mood/symptom logs at lag 0/1/2/3 days. Degrades to a demo
+// curve when no backend/data is available (so the chart always renders).
+export function useLagModel() {
+  const userId = useApp((s) => s.userId);
+  return useQuery({
+    queryKey: ["lag-model", userId],
+    queryFn: async (): Promise<LagPoint[]> => {
+      if (!live() || !userId) return demo.demoLagModel;
+      const sb = getSupabaseBrowser();
+      const { data, error } = await sb
+        .from("personal_exposure_lag_model")
+        .select("lag_days, correlation_strength")
+        .eq("user_id", userId)
+        .order("lag_days", { ascending: true });
+      if (error) throw error;
+      const rows = (data as unknown as LagPoint[]) ?? [];
+      return rows.length ? rows : demo.demoLagModel;
+    },
+    placeholderData: demo.demoLagModel,
+  });
+}
+
+// A plain-language personalized environmental note derived from the lag model
+// and today's snapshot. Returns null when there's nothing meaningful to say.
+export function usePersonalEnvNote(env: { pm25: number | null } | undefined): string | null {
+  const { data: lags } = useLagModel();
+  if (!env || env.pm25 == null) return null;
+  const strongest = (lags ?? []).reduce<LagPoint | null>(
+    (best, l) => (!best || l.correlation_strength > best.correlation_strength ? l : best),
+    null,
+  );
+  if (!strongest || strongest.correlation_strength < 0.3) return null;
+  if (env.pm25 < 35) return null;
+  const lag = strongest.lag_days;
+  const when = lag === 0 ? "the same day" : `~${lag} day${lag > 1 ? "s" : ""} after`;
+  return `Your mood has historically dipped ${when} PM2.5 spikes like today's (correlation ${Math.round(
+    strongest.correlation_strength * 100,
+  )}%).`;
+}
+
 export function useBadges() {
   const userId = useApp((s) => s.userId);
   return useQuery({
