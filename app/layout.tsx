@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./dashboard.css";
 import Providers from "@/components/providers/Providers";
@@ -10,9 +10,23 @@ export const metadata: Metadata = {
   title: "Arogyasetu — The Predictive Community Health Operating System",
   description:
     "Arogyasetu — a privacy-first desktop platform that fuses web-based self-report, real-time environmental exposure, and a trust-scored mutual-aid network into one closed predictive loop, delivering AI micro-interventions and discreet Care Pings before crisis.",
+  manifest: "/manifest.json",
+  applicationName: "AROGYASETU",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "AROGYASETU",
+  },
   icons: {
     icon: FAVICON,
+    apple: "/icons/apple-touch-icon.png",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#000000",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({

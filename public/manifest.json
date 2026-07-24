@@ -1,0 +1,55 @@
+{
+  "name": "AROGYASETU — Predictive Community Health OS",
+  "short_name": "AROGYASETU",
+  "description": "A free, privacy-first predictive community health operating system: check-ins, journaling, environmental exposome, mutual aid, and Care Pings.",
+  "id": "/dashboard",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["health", "lifestyle", "medical", "social"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Quick Check-In",
+      "short_name": "Check-In",
+      "url": "/dashboard/checkin",
+      "description": "Log a 15-second EMA check-in"
+    },
+    {
+      "name": "New Journal Entry",
+      "short_name": "Journal",
+      "url": "/dashboard/journal",
+      "description": "Write a journal entry"
+    },
+    {
+      "name": "Crisis Resources",
+      "short_name": "Resources",
+      "url": "/dashboard/resources",
+      "description": "Always-available crisis and community resources"
+    }
+  ]
+}

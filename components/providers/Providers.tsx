@@ -8,6 +8,7 @@ import { useApp } from "@/lib/store";
 import { getSupabaseBrowser, isSupabaseConfigured } from "@/lib/supabase/client";
 import type { Profile } from "@/lib/types";
 import CrisisInterstitial from "@/components/crisis/CrisisInterstitial";
+import PwaManager from "@/components/pwa/PwaManager";
 
 function A11yApplier() {
   const a11y = useApp((s) => s.a11y);
@@ -84,6 +85,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <A11yApplier />
       {children}
       <CrisisInterstitial />
+      <PwaManager />
     </QueryClientProvider>
   );
 }

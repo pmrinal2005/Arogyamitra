@@ -1,0 +1,30 @@
+{
+  "note": "Static micro-intervention content, precached for offline use and as the final fallback when every free LLM provider is rate-limited or down. Mirrors supabase/functions/_shared/fallbacks.ts.",
+  "templates": {
+    "breathing_exercise": [
+      "Let's take one slow minute together. Breathe in for 4 counts, hold for 4, out for 6. Repeat four times. Notice your shoulders soften a little each time.",
+      "Box breathing: in for 4, hold 4, out 4, hold 4. Do this for five rounds. There's nothing else to get right — just the next breath."
+    ],
+    "grounding_prompt": [
+      "Try the 5-4-3-2-1 grounding practice: name 5 things you can see, 4 you can touch, 3 you can hear, 2 you can smell, and 1 you can taste. It gently brings you back to the present.",
+      "Press your feet into the floor and name where you are, the date, and one thing you can see. You're here, and this moment is safe."
+    ],
+    "journaling_prompt": [
+      "When you have a moment, you might write about one small thing that felt heavy today — and one thing, however tiny, that felt okay. No pressure to share it with anyone.",
+      "If words are hard, try finishing this line: 'Right now I notice…' — just one honest sentence is enough."
+    ],
+    "hydration_med_reminder": [
+      "A gentle nudge: a glass of water and, if you take any, your usual medication can help steady both body and mood. Small steps count.",
+      "Bodies get thirsty before minds notice. A glass of water now might take the edge off the next hour."
+    ],
+    "telehealth_nudge": [
+      "If today feels like a lot, talking to someone can help. Many communities offer free tele-health or warm-line support — the Resources tab lists options near you.",
+      "Reaching out isn't a last resort — it's a skill. A free warm-line or community counselor can be a good next step; see the Resources tab."
+    ],
+    "educational_snippet": [
+      "Dips in sleep and connection often ripple into mood a day or two later. Noticing the pattern is the first step — and you're already doing that by checking in.",
+      "Your forecast learns from your own baseline, not a population average. That's why small, honest check-ins make it more useful over time."
+    ]
+  },
+  "disclaimer": "These are supportive wellbeing suggestions, not medical advice, diagnosis, therapy, or emergency care."
+}
