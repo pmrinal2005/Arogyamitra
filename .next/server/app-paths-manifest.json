@@ -1,4 +1,22 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/page": "app/page.js"
+  "/login/page": "app/login/page.js",
+  "/onboarding/page": "app/onboarding/page.js",
+  "/page": "app/page.js",
+  "/auth/callback/route": "app/auth/callback/route.js",
+  "/api/intervention/route": "app/api/intervention/route.js",
+  "/dashboard/care-pings/page": "app/dashboard/care-pings/page.js",
+  "/dashboard/checkin/page": "app/dashboard/checkin/page.js",
+  "/dashboard/community/page": "app/dashboard/community/page.js",
+  "/dashboard/environment/page": "app/dashboard/environment/page.js",
+  "/dashboard/insights/page": "app/dashboard/insights/page.js",
+  "/dashboard/journal/page": "app/dashboard/journal/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/resources/page": "app/dashboard/resources/page.js",
+  "/dashboard/scales/page": "app/dashboard/scales/page.js",
+  "/dashboard/settings/family/page": "app/dashboard/settings/family/page.js",
+  "/dashboard/settings/privacy/page": "app/dashboard/settings/privacy/page.js",
+  "/dashboard/settings/profile/page": "app/dashboard/settings/profile/page.js",
+  "/api/health/route": "app/api/health/route.js",
+  "/api/env/route": "app/api/env/route.js"
 }

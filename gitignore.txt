@@ -1,24 +1,37 @@
-# prod
-dist/
-
-# dev
-.yarn/
-!.yarn/releases
-.vscode/*
-!.vscode/launch.json
-!.vscode/*.code-snippets
-.idea/workspace.xml
-.idea/usage.statistics.xml
-.idea/shelf
-
-# deps
+# dependencies
 node_modules/
-.wrangler
+.pnp
+.pnp.js
+
+# next.js / build
+.next/
+out/
+dist/
+build/
 
 # env
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 .env.production
 .dev.vars
+
+# testing
+coverage/
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# supabase local
+.branches
+.temp
+supabase/.temp
 
 # logs
 logs/
@@ -31,3 +44,6 @@ lerna-debug.log*
 
 # misc
 .DS_Store
+.idea/
+.vscode/*
+!.vscode/launch.json
