@@ -1,34 +1,20 @@
 {
-  "name": "arogyamitra",
-  "version": "1.0.0",
-  "private": true,
-  "description": "SynapseX - a scroll-driven cinematic neural-AI landing page rebuilt in Next.js + React.",
+  "name": "webapp",
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "wrangler pages dev",
+    "deploy": "npm run build && wrangler pages deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
   },
-  "keywords": [
-    "landing-page",
-    "nextjs",
-    "react",
-    "vercel",
-    "swiper",
-    "lenis"
-  ],
-  "license": "MIT",
   "dependencies": {
-    "gsap": "^3.15.0",
-    "lenis": "^1.3.25",
-    "next": "^14.2.35",
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "hono": "^4.12.31"
   },
   "devDependencies": {
-    "@types/node": "20.14.10",
-    "@types/react": "18.3.3",
-    "@types/react-dom": "18.3.0",
-    "typescript": "5.5.3"
+    "@hono/vite-build": "^1.11.1",
+    "@hono/vite-dev-server": "^0.26.1",
+    "vite": "^8.1.4",
+    "wrangler": "^4.110.0"
   }
 }

@@ -1,0 +1,21 @@
+{
+  "components/ArogyaFilm.tsx -> gsap": {
+    "id": 6498,
+    "files": [
+      "static/chunks/c15bf2b0.0743d569cdf530e0.js",
+      "static/chunks/498.e95821d3da281282.js"
+    ]
+  },
+  "components/ArogyaFilm.tsx -> gsap/ScrollTrigger": {
+    "id": 9498,
+    "files": [
+      "static/chunks/84.e125f073022f44fa.js"
+    ]
+  },
+  "components/ArogyaFilm.tsx -> lenis": {
+    "id": 9096,
+    "files": [
+      "static/chunks/96.bae93ca2c14b65ab.js"
+    ]
+  }
+}
